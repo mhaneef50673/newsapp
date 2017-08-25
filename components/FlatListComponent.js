@@ -64,7 +64,7 @@ export class FlatListComponent extends React.Component {
                         style = {{margin : 1}}
                         onShowUnderlay={separators.highlight}
                         onHideUnderlay={separators.unhighlight}>
-                        <View style={{backgroundColor: 'white'}}>
+                        <View style={{backgroundColor: 'white', margin : 1}}>
                             <Text>{item.title}</Text>
                         </View>
                         </TouchableHighlight>
