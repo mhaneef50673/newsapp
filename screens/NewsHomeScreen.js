@@ -11,6 +11,7 @@ import {
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
+import { FlatListComponent } from '../components/FlatListComponent';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {    
@@ -25,6 +26,7 @@ export default class HomeScreen extends React.Component {
         <Text style={styles.text}>
           This is news Home screen
         </Text>
+        <FlatListComponent />
       </View>
     );
   }

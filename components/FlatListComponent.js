@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, View, Text} from 'react-native';
+import {FlatList, View, Text, TouchableHighlight} from 'react-native';
 
 export class FlatListComponent extends React.Component {
  
@@ -9,7 +9,7 @@ export class FlatListComponent extends React.Component {
        this.state = {
            loading : false,
            error : null,
-           // data : [{key: 'a'}, {key: 'b'}],
+            data : [{key: 'a'}, {key: 'b'}],
        } 
     } 
 
@@ -23,7 +23,7 @@ export class FlatListComponent extends React.Component {
         fetch(url)
             .then(response => response.text())
                 .then(response => {
-                    console.log("Response before parsed");
+                    console.log("Response before parsed !!!");
                     console.log(response);
                     var responseData = [];
                     parseString(response, {ignoreAttrs : false, mergeAttrs : true}, function (err, result) {
@@ -39,7 +39,7 @@ export class FlatListComponent extends React.Component {
                             responseData.push(tempObj);
                         });      
                     });
-                                            
+                                                 
                     this.setState({
                         data : responseData
                     })  
@@ -47,7 +47,7 @@ export class FlatListComponent extends React.Component {
     } 
 
     componentDidMount(){
-        console.log("OMG, Component mounted");
+        console.log("OMG, Component mounteded");
         this.getData();
     }
 
@@ -56,8 +56,20 @@ export class FlatListComponent extends React.Component {
             <View>
                 <FlatList
                     data={this.state.data}
-                    renderItem={({item}) => <Text>{item.title}</Text>}
-                   // keyExtractor = {item => item.key}
+                   // renderItem={({item}) => <Text>{item.title}</Text>}
+                   // style={{border : '2'}}
+                   renderItem={({item, separators}) => (
+                        <TouchableHighlight
+                        //onPress={() => this._onPress(item)}
+                        style = {{margin : 1}}
+                        onShowUnderlay={separators.highlight}
+                        onHideUnderlay={separators.unhighlight}>
+                        <View style={{backgroundColor: 'white'}}>
+                            <Text>{item.title}</Text>
+                        </View>
+                        </TouchableHighlight>
+                    )}
+                    keyExtractor = {item => item.key}
                 />
             </View>    
         )
