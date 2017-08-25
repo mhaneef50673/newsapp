@@ -4,12 +4,16 @@ import { StackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 import registerForPushNotificationsAsync from '../api/registerForPushNotificationsAsync';
+import NewsDetailComponent from '../components/NewsDetailComponent';
 
 const RootStackNavigator = StackNavigator(
   {
-    Main: {
+    NewsHome: {
       screen: MainTabNavigator,
     },
+    NewsDetail:{
+      screen: NewsDetailComponent
+    }
   },
   {
     navigationOptions: () => ({

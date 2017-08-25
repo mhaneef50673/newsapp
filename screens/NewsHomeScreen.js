@@ -11,7 +11,7 @@ import {
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
-import { FlatListComponent } from '../components/FlatListComponent';
+import { NewsHomeComponent } from '../components/NewsHomeComponent';
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {    
@@ -21,9 +21,11 @@ export default class HomeScreen extends React.Component {
   };
 
   render() {
-    return (
+    const url = 'http://www.manchestereveningnews.co.uk/all-about/manchester-united-fc?service=rss';
+
+    return(
       <View style={styles.container}>
-        <FlatListComponent />
+        <NewsHomeComponent navigate = {this.props.navigation} source={url} />
       </View>
     );
   }
