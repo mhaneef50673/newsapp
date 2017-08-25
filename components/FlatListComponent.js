@@ -1,5 +1,11 @@
 import React from 'react';
-import {FlatList, View, Text, TouchableHighlight} from 'react-native';
+import {
+    FlatList, 
+    View, 
+    Text, 
+    TouchableHighlight, 
+    StyleSheet
+} from 'react-native';
 
 export class FlatListComponent extends React.Component {
  
@@ -7,9 +13,10 @@ export class FlatListComponent extends React.Component {
         // Always super constructor call comes first
         super(props);
        this.state = {
-           loading : false,
+           loading : true,
            error : null,
-            data : [{key: 'a'}, {key: 'b'}],
+           data : [{key: 'a'}, {key: 'b'}],
+           refreshing : false
        } 
     } 
 
@@ -17,18 +24,11 @@ export class FlatListComponent extends React.Component {
         const url = "http://www.manchestereveningnews.co.uk/all-about/manchester-united-fc?service=rss";
         const parseString = require('react-native-xml2js').parseString;
 
-        this.setState({
-            loading : true,
-        })
         fetch(url)
             .then(response => response.text())
-                .then(response => {
-                    console.log("Response before parsed !!!");
-                    console.log(response);
+                .then(response => {                                        
                     var responseData = [];
-                    parseString(response, {ignoreAttrs : false, mergeAttrs : true}, function (err, result) {
-
-                        //var tempObj = {};
+                    parseString(response, {ignoreAttrs : false, mergeAttrs : true}, function (err, result) {                        
                         var items = result.rss.channel[0].item;
                         items.forEach(function(element,index) {
                             var tempObj = {};
@@ -41,7 +41,9 @@ export class FlatListComponent extends React.Component {
                     });
                                                  
                     this.setState({
-                        data : responseData
+                        data : responseData,
+                        loading : false,
+                        refreshing : false
                     })  
                 })
     } 
@@ -51,27 +53,62 @@ export class FlatListComponent extends React.Component {
         this.getData();
     }
 
-    render() {
+    refreshList = () => {        
+        this.setState ({
+            refreshing : true
+        }, () => {
+            this.getData();
+        })
+    }
+
+    newsPressed = (item) => {        
+        console.log(item);
+    }
+
+    render() {       
         return (
-            <View>
+            <View style={styles.flatListView}>
                 <FlatList
                     data={this.state.data}
-                   // renderItem={({item}) => <Text>{item.title}</Text>}
-                   // style={{border : '2'}}
-                   renderItem={({item, separators}) => (
-                        <TouchableHighlight
-                        //onPress={() => this._onPress(item)}
-                        style = {{margin : 1}}
-                        onShowUnderlay={separators.highlight}
-                        onHideUnderlay={separators.unhighlight}>
-                        <View style={{backgroundColor: 'white', margin : 1}}>
-                            <Text>{item.title}</Text>
-                        </View>
-                        </TouchableHighlight>
+                    renderItem={({item, separators}) => (
+                            <TouchableHighlight
+                                onPress={() => this.newsPressed(item)}
+                                style = {{margin : 1}}
+                                activeOpacity = {10}
+                                underlayColor = {'#ff0000'}
+                                onShowUnderlay={separators.highlight}
+                                onHideUnderlay={separators.unhighlight}>
+                                <View style={styles.newsRow}>
+                                    <Text style={styles.news}>{item.title}</Text>
+                                </View>
+                            </TouchableHighlight>
                     )}
                     keyExtractor = {item => item.key}
+                    initialNumToRender = {5}
+                    refreshing = {this.state.refreshing}
+                    onRefresh = {this.refreshList}
                 />
             </View>    
         )
     }
 }
+
+const styles = StyleSheet.create({
+    newsRow : {
+       backgroundColor : 'white',
+       margin : 1,
+       borderRadius: 4,
+       borderWidth: 1,
+       borderColor: '#d6d7da',
+       height : 100,
+       elevation : 1 ,
+       justifyContent : 'center'
+    },
+    news :{
+        fontSize : 16,        
+        padding : 10
+    },
+    flatListView : {
+       padding : 4 
+    }
+})

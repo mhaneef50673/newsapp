@@ -23,9 +23,6 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>
-          This is news Home screen
-        </Text>
         <FlatListComponent />
       </View>
     );
@@ -35,10 +32,7 @@ export default class HomeScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  text : {
-      paddingTop : 20
+    flex: 1, 
+    backgroundColor: '#C0C0C0',
   }
 });
