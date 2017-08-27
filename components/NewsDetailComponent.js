@@ -52,7 +52,7 @@ export default class NewsDetailComponent extends React.Component {
     shareLink = () => {
         let news = this.state.news;
         Share.share({
-                message : news.title + ". Read the article at" + news.link,                        
+                message : news.title + ". Read the article at " + news.link,                        
             },{
                 dialogTitle : 'Share the news'
             }     
