@@ -41,7 +41,7 @@ export default TabNavigator(
               iconName = "registered";
             break;            
           case 'Settings':
-              iconName = 'wrench';
+              iconName = 'gear';
         }
         return (
           <FontAwesome
